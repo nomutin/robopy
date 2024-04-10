@@ -11,19 +11,19 @@
 === "pipenv"
 
     ``` sh
-    pipenv install git+https://github.com/keio-crl/robopy.git
+    pipenv install git+https://github.com/nomutin/robopy.git
     ```
 
 === "poetry"
 
     ``` sh
-    poetry add git+https://github.com/keio-crl/robopy.git
+    poetry add git+https://github.com/nomutin/robopy.git
     ```
 
 === "rye"
 
     ``` sh
-    rye add robopy --git+https://github.com/keio-crl/robopy.git
+    rye add robopy --git+https://github.com/nomutin/robopy.git
     ```
 
 !!! tip
@@ -35,12 +35,12 @@
 
 ロボット用のPCなど、仮想環境を使いたくない場合はpipを使ってインストールしてください.
 
-    pip install git+https://github.com/keio-crl/robopy.git
+    pip install git+https://github.com/nomutin/robopy.git
 
 ## with git
 
 もし Robopy の機能をいじりたい場合は、ソースコードを直接いじるのもいいでしょう.  
 詳細な仕様については [API Document](api.md) を参照してください.
-[Issue](https://github.com/keio-crl/robopy/issues) や [Pull Request](https://github.com/keio-crl/robopy/pulls) は大歓迎です.
+[Issue](https://github.com/nomutin/robopy/issues) や [Pull Request](https://github.com/nomutin/robopy/pulls) は大歓迎です.
 
-    git clone https://github.com/keio-crl/robopy.git 
+    git clone https://github.com/nomutin/robopy.git

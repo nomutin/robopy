@@ -1,7 +1,7 @@
 site_name: Robopy Documentation
 copyright: "&copy; 2024 Nomura Yuta"
-repo_url: https://github.com/keio-crl/robopy.git
-repo_name: keio-crl/robopy
+repo_url: https://github.com/nomutin/robopy.git
+repo_name: nomutin/robopy
 
 theme:
   name: "material"
@@ -81,7 +81,7 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/keio-crl/robopy.git
+      link: https://github.com/nomutin/robopy.git
   consent:
     title: Cookie consent
     description:

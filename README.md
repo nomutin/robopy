@@ -5,6 +5,8 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/psf/black)
 [![mypy](https://img.shields.io/badge/mypy-checked-blue)](http://mypy-lang.org/)
+[![Lint and Test](https://github.com/nomutin/Robopy/actions/workflows/ci.yaml/badge.svg)](https://github.com/nomutin/Robopy/actions/workflows/ci.yaml)
+[![Deploy Docs](https://github.com/nomutin/Robopy/actions/workflows/docs.yaml/badge.svg)](https://github.com/nomutin/Robopy/actions/workflows/docs.yaml)
 
 Python だけでロボットを動かすためのAPIです.
 
@@ -19,4 +21,4 @@ Python だけでロボットを動かすためのAPIです.
 
 ## Full Documentation
 
-仕様やトラブルシューティングについては **[Full Documentation]()** へ
+仕様やトラブルシューティングについては **[Full Documentation](https://nomutin.github.io/Robopy/)** へ
