@@ -4,21 +4,9 @@ import dynamixel_sdk
 
 from robopy.control_table import ControlTable, cast_value
 
-__all__ = ["DynamixelCommError", "DynamixelDriver"]
-
 
 class DynamixelDriver:
-    """
-    Dynamixelを1個単位で制御するためのクラス.
-
-    Methods
-    -------
-    read(control_table: ControlTable) -> int
-        Dynamixelからデータを読み取る.
-    write(control_table: ControlTable, value: int) -> None
-        Dynamixelにデータを書き込む.
-
-    """
+    """Dynamixelを1個単位で制御するためのクラス."""
 
     def __init__(
         self,
@@ -32,7 +20,7 @@ class DynamixelDriver:
         Parameters
         ----------
         servo_id : int
-            DynamixelのID. Dynamixel wizardで設定できるらしい.
+            DynamixelのID.
         port_handler : PortHandler
             シリアル通信のためのハンドラ.
         packet_handler : Protocol2PacketHandler
@@ -47,14 +35,28 @@ class DynamixelDriver:
         """
         Dynamixelからデータを読み取る.
 
-        パケットハンドラから取得した値を
-        `cast_value` で有効な値に加工して返す.
+        パケットハンドラから取得した値を `cast_value` で有効な値に加工して返す.
+
+        Example
+        -------
+        ```python
+        from robopy import DynamixelDriver, ControlTable
+
+        dynamixel = DynamixelDriver(...)
+        while True:
+            value = dynamixel.read(ControlTable.PRESENT_POSITION)
+            print(f"Current position: {value}")
+        ```
 
         Parameters
         ----------
         control_table : ControlTable
-            読み取るデータ.
-            `.read(ControlTable.PRESENT_POSITION)` のように指定する.
+            読み取るデータの `ControlTable`.
+
+        Returns
+        -------
+        int
+            取得した値. `ControlTable`の内容に従った整数値.
 
         Raises
         ------
@@ -84,12 +86,25 @@ class DynamixelDriver:
         """
         Dynamixelにデータを書き込む.
 
+        Example
+        -------
+        ```python
+        from robopy import DynamixelDriver, ControlTable
+
+        dynamixel = DynamixelDriver(...)
+        dynamixel.write(ControlTable.TORQUE_ENABLE, 1)
+        ```
+
         Parameters
         ----------
         control_table : ControlTable
             書き込むデータの種類.
         value : int
             書き込む値.
+
+        Returns
+        -------
+        None
 
         Raises
         ------

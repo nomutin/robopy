@@ -57,6 +57,7 @@ plugins:
       handlers:
         python:
           options:
+            members_order: source
             docstring_style: numpy
 
 markdown_extensions:

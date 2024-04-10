@@ -29,11 +29,13 @@ class CameraDriver(cv2.VideoCapture):
         """
         フレームをnp.ndarrayとして返す.
 
-        Examples
-        --------
-        >>> driver = CameraDriver(camera_id)
-        >>> frame = driver.get_frame()
-        >>> print(frame.shape)
+        Example:
+        -------
+        ```python
+        driver = CameraDriver(camera_id)
+        frame = driver.get_frame()
+        print(frame.shape)
+        ```
 
         """
         ret, frame = self.read()

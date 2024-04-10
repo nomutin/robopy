@@ -1,11 +1,4 @@
-"""
-Dynamixelを組み合わせたロボットを制御するクラス.
-
-研究室のロボットには大体使えます
-- OpenManipulator-X
-- WidowX
-- Rakuda-2
-"""
+"""Dynamixel を組み合わせたロボットを制御するクラス."""
 
 from __future__ import annotations
 
@@ -46,6 +39,8 @@ class RobotDriver:
         Raises
         ------
         RuntimeError
+            次のうちどれかが発生した場合.
+
             - ポートのオープンに失敗した場合
             - ボーレートの設定に失敗した場合
             - 全サーボのpingに失敗した場合
@@ -81,10 +76,71 @@ class RobotDriver:
         ]
 
     def write(self, control_table: ControlTable, values: list[int]) -> None:
-        """各サーボに値を書き込む."""
+        """
+        各サーボに値を書き込む.
+
+        Note
+        ----
+        - サーボのIDの順番と値の順番は一致している必要がある.
+
+        Example
+        -------
+        ```python
+        from robopy import RobotDriver, ControlTable
+
+        robot = RobotDriver(servo_ids=[1, 2, 3, 4, 5])
+        robot.write(ControlTable.TORQUE_ENABLE, [1] * 5)
+        ```
+
+        Parameters
+        ----------
+        control_table : ControlTable
+            書き込むデータの種類.
+        values : list[int]
+            書き込む値.
+
+        Returns
+        -------
+        None
+
+        Raises
+        ------
+        DynamixelCommError
+            どれかのサーボの書き込みに失敗した場合.
+
+        """
         for servo, value in zip(self.servos, values):
             servo.write(control_table, value)
 
     def read(self, control_table: ControlTable) -> list[int]:
-        """各サーボから値を読み取る."""
+        """
+        各サーボから値を読み取る.
+
+        Example
+        -------
+        ```python
+        from robopy import RobotDriver, ControlTable
+
+        robot = RobotDriver(...)
+        while True:
+            position = robot.read(ControlTable.PRESENT_POSITION)
+            print(f"Current position: {position}")
+        ```
+
+        Parameters
+        ----------
+        control_table : ControlTable
+            読み取るデータの種類.
+
+        Returns
+        -------
+        list[int]
+            各サーボからの値.
+
+        Raises
+        ------
+        DynamixelCommError
+            どれかのサーボの読み取りに失敗した場合.
+
+        """
         return [servo.read(control_table) for servo in self.servos]

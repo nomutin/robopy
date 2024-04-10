@@ -15,14 +15,6 @@ from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Literal
 
-__all__ = [
-    "ControlItem",
-    "ControlTable",
-    "Dtype",
-    "OperatingMode",
-    "cast_value",
-]
-
 
 class Dtype(Enum):
     """
@@ -87,36 +79,129 @@ class ControlTable(Enum):
     Attributes
     ----------
     MODEL_NUMBER : ControlItem
-        Dynamixelのモデル番号.
-        モデル固有の値を保持します.
-        異なる種類のDynamixelを混在して使用する際の個体識別などに使用できます.
+        Dynamixel のモデル番号.
+        モデル固有の値を保持する.
+        異なる種類の Dynamixel を混在して使用する際の個体識別などに使用できる.
     MODEL_INFORMATION : ControlItem
         Dynamixelのモデル情報.
-        異なる種類のDynamixelを混在して使用する際の個体識別などに使用できます.
+        異なる種類の Dynamixel を混在して使用する際の個体識別などに使用できる.
     VERSION_OF_FIRMWARE : ControlItem
-        内蔵されるCPUに書き込まれたプログラムのバージョンです.
-        ファームウェアの更新を行った際に合わせて自動的に変更されます.
+        内蔵される CPU に書き込まれたプログラムのバージョン.
+        ファームウェアの更新を行った際に合わせて自動的に変更される.
     ID : ControlItem
-        各Dynamixelを特定するための固有の値で0~252の範囲の数値で設定します.
-        同一ネットワーク内に存在するDynamixelには各々異なるIDが要求されます.
+        各 Dynamixel を特定するための固有の値で0~252の範囲の数値で設定する.
+        同一ネットワーク内に存在する Dynamixel には各々異なるIDが要求される.
     BAUDRATE : ControlItem
-        通信する際のボーレートです.
-        ホストとDynamixelのボーレートは一致させなくてはなりません.
+        通信する際のボーレート.
+        ホストとDynamixelのボーレートは一致させる必要がある.
         詳しくは `::: Baudrate` を参照.
     RETURN_DELAY_TIME : ControlItem
-        インストラクションパケットが送られた後、ステータスパケットを返すまでの待ち時間を設定します.
-        0を設定しても問題ありません.
+        インストラクションパケットが送られた後、ステータスパケットを返すまでの待ち時間.
+        0を設定しても問題ない.
 
         `Delay Time [us] = Value * 2 [us]`
     DRIVE_MODE : ControlItem
-        デフォルト回転方向・デュアルジョイント・プロファイル構成を設定します。
-        デフォルト回転方向によりはPosition, Velocity, PWMの各指令によるホーンの回転方向が変化します.
+        デフォルト回転方向・デュアルジョイント・プロファイル構成を設定する.
+        デフォルト回転方向によりはPosition・Velocity・PWMの各指令によるホーンの回転方向が変化する.
 
         - `0`: Direction of rotation (0:Normal, 1:Reverse)
         - `1`: Profile configuration (0:Master, 1:Slaver, X540シリーズのみ)
         - `2`: Dual Joint (0:Velocity-based Profile, 1:Time-based Profile)
     OPERATING_MODE : ControlItem
         動作モード. 詳しくは `::: OperatingMode` を参照.
+    SECONDARY_ID : ControlItem
+        DynamixelのSecondary ID.
+        Secondary ID は、ID と同様に各 Dynamixel を識別するために用いられる.
+        なお、Secondary IDに253以上の値が設定されている場合機能しない。
+    PROTOCOL_VERSION : ControlItem
+        通信プロトコルのバージョン.
+        異なるプロトコルを混在させて使用する事はできない.
+        基本的には1か2を選択する.
+    HOMING_OFFSET : ControlItem
+        この値が真の現在位置に加算され `PRESENT_POSITION` に反映される.
+        オフセット位置をホスト側では無く Dynamixel 側に持たせる際に使用する.
+        真の現在位置とは, Multi Turn が off・Homing Offset が 0・
+        Direction of rotation が0の時の`PRESENT_POSITION` を意味する.
+
+        `Position [deg] = Value * 360 [deg] / 4095`
+    MOVING_THRESHOLD : ControlItem
+        `PRESENT_VELOCITY` の絶対値と比較した結果が `MOVING` に示される.
+
+        `Velocity [rpm] = Value * 0.229 [rpm]`
+    TEMPERATURE_LIMIT : ControlItem
+        `PRESENT_TEMPERATURE` がこの値を超えると
+        `HARDWARE_ERROR_STATUS` の該当ビットがONになり,
+        `SHUTDOWN` で指定された動作に遷移する.
+    MAX_VOLTAGE_LIMIT : ControlItem
+        `PRESENT_INPUT_VOLTAGE` がこの値を超えると
+        `HARDWARE_ERROR_STATUS` の該当ビットがONになり,
+        `SHUTDOWN` で指定された動作に遷移する.
+
+        `Voltage [V] = Value * 0.1 [V]`
+    MIN_VOLTAGE_LIMIT : ControlItem
+        `PRESENT_INPUT_VOLTAGE` がこの値を下回ると
+        `HARDWARE_ERROR_STATUS` の該当ビットがONになり,
+        `SHUTDOWN` で指定された動作に遷移する。
+    PWM_LIMIT : ControlItem
+        `GOAL_PWM` の絶対値はこの値以下に制限される.
+
+        `Duty [%] = Value * 100 [%] / 855`
+    CURRENT_LIMIT : ControlItem
+        `GOAL_CURRENT` の絶対値はこの値以下に制限される.
+
+        `Current [mA] = Value * CurrentScalingFactor [mA]`
+    ACCELERATION_LIMIT : ControlItem
+        `PROFILE_ACCELERATION` の絶対値はこの値以下に制限される.
+
+        `Acceleration [rpm²] = Value * 214.577`
+    VELOCITY_LIMIT : ControlItem
+        `GOAL_VELOCITY` の絶対値と `PROFILE_VELOCITY` はこの値以下に制限される.
+
+        `Velocity [rpm] = Value * 0.229 [rpm]`
+    MAX_POSITION_LIMIT : ControlItem
+        `OPERATING_MODE` に `POSITION_CONTROL_MODE`が設定されている時に
+        `GOAL_POSITION` はこの値の範囲内に制限される.
+
+        `Position [deg] = Value * 360 [deg] / 4096`
+    MIN_POSITION_LIMIT : ControlItem
+        `OPERATING_MODE` に `POSITION_CONTROL_MODE`が設定されている時に
+        `GOAL_POSITION` はこの値の範囲内に制限される.
+    SHUTDOWN : ControlItem
+        この設定と `HARDWARE_ERROR_STATUS` の論理積が0以外になると,
+        `TORQUE_ENABLE` は0になりモータの出力が遮断さる.
+        以後 `TORQUE_ENABLE` を1にする事はできない.
+
+        - `0`: Input Voltage Error
+        - `2`: Overheating Error
+        - `3`: Motor Encoder Error
+        - `4`: Electrical Shock Error
+        - `5`: Overload Error
+
+        なお、シャットダウン状態から復帰するには発生している障害を排除した後、
+        電源の再投入か、REBOOTインストラクションパケットを受信する必要がある.
+    TORQUE_ENABLE : ControlItem
+        出力軸をフリーにするか `OPERATION_MODE` に従った制御を開始する。
+
+        - `0`: 出力軸フリー・制御停止・ロックされたアイテムを解除
+        - `1`: `OPERATION_MODE`に従った制御開始、NVMのアイテムロック
+    LED : ControlItem
+        本体に装備されたLEDを点灯ないし消灯する.
+
+        - `0`: 消灯
+        - `1`: 点灯
+    HARDWARE_ERROR_STATUS : ControlItem
+        様々なフィードバックと内部の制御状態を比較した結果を示す.
+        `SHUTDOWN`と同じ出力.
+    VELOCITY_I_GAIN : ControlItem
+        速度制御演算におけるIゲインを指定する。
+        `OPERATION_MODE` に `VELOCITY_CONTROL_MODE` が設定されている時に有効.
+
+        `KvI = (Velocity I Gain) / 65536`
+    VELOCITY_P_GAIN : ControlItem
+        速度制御演算におけるPゲインを指定する。
+        `OPERATION_MODE` に `VELOCITY_CONTROL_MODE` が設定されている時に有効.
+
+        `KvP = (Velocity P Gain) / 128`
 
     """
 
