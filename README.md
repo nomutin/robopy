@@ -1,9 +1,7 @@
 # Robopy 🤖🐍
 
 ![python](https://img.shields.io/badge/python-3.7%20|%203.8%20|%203.9%20|%203.10-blue)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![mypy](https://img.shields.io/badge/mypy-checked-blue)](http://mypy-lang.org/)
-[![Lint and Test](https://github.com/nomutin/Robopy/actions/workflows/ci.yaml/badge.svg)](https://github.com/nomutin/Robopy/actions/workflows/ci.yaml)
+[![CI](https://github.com/nomutin/Robopy/actions/workflows/ci.yaml/badge.svg)](https://github.com/nomutin/Robopy/actions/workflows/ci.yaml)
 
 Python だけでロボットを動かすためのAPIです.  
 研究室の機器なら大体動かせるはずです.
