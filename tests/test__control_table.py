@@ -2,6 +2,7 @@
 """`control_table.py`のユニットテスト."""
 
 import pytest
+
 from robopy.control_table import ControlTable, Dtype, cast_value
 
 
