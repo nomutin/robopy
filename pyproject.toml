@@ -1,0 +1,82 @@
+[project]
+name = "robopy"
+version = "0.1.0"
+description = "Pythonだけでロボットを動かすためのリポジトリ"
+dependencies = [
+    "dynamixel-sdk>=3.7.31",
+    "opencv-python>=4.9.0.80",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "black>=24.3.0",
+    "isort>=5.13.2",
+    "ruff>=0.3.5",
+    "mypy>=1.9.0",
+    "pytest-cov>=5.0.0",
+    "pytest-mock>=3.14.0",
+    "mkdocs>=1.5.3",
+    "mkdocstrings[python]>=0.24.3",
+    "mkdocs-material>=9.5.17",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/robopy"]
+
+[tool.rye.scripts]
+lint = { chain = ["isort --check .", "black --check .", "mypy --strict .", "ruff check ."] }
+format = { chain = ["isort .", "black .", "ruff format ."] }
+clean = { chain = ["clean:cache", "clean:pycache"] }
+test = { chain = ["pytest -ra --cov=src --cov-report=term --cov-report=xml"] }
+"clean:cache" = "rm -rf .mypy_cache/ .pytest_cache/ .ruff_cache/ .coverage coverage.xml"
+"clean:pycache" = "find . -type d -name __pycache__ -exec rm -rf {} +"
+
+[tool.black]
+line-length = 79
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.mypy]
+python_version = 3.8
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = [
+    "src",
+    "tests",
+]
+
+[tool.ruff]
+line-length = 79
+target-version = "py38"
+
+[tool.ruff.lint]
+preview = true
+select = ["ALL"]
+ignore = [
+    "CPY001",  # missing-copyright-notice
+    "D203",    # one-blank-line-before-class
+    "D212",    # multi-line-summary-first-line
+    "ISC001",  # single-line-implicit-string-concatenation
+    "PGH003",  # blanket-type-ignore
+    "COM812",  # missing-comma-in-multiline
+]
+fixable = ["ALL"]
+unfixable = []
+exclude = [".git", ".ruff_cache", ".venv",]
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+preview = true
