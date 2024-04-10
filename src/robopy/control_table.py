@@ -1,11 +1,11 @@
 # ruff: noqa: PLR2004
 """
-Dynamixel のコントロールテーブル.
+Dynamixel のコントロールテーブル関連.
 
 References
 ----------
-- https://emanual.robotis.com/docs/en/dxl/x/xm430-w350/
-- https://www.besttechnology.co.jp/modules/knowledge
+- [ROBOTIS E-manual](https://emanual.robotis.com/docs/en/dxl/x/xm430-w350/)
+- [X Series Control table](https://www.besttechnology.co.jp/modules/knowledge/?X%20Series%20Control%20table)
 
 """
 
@@ -25,7 +25,21 @@ __all__ = [
 
 
 class Dtype(Enum):
-    """データ型."""
+    """
+    `ControlItem`のデータ型.
+
+    Attributes
+    ----------
+    UINT8 : int
+        8bit符号なし整数.
+    UINT16 : int
+        16bit符号なし整数.
+    UINT32 : int
+        32bit符号なし整数.
+    INT16 : int
+        16bit符号あり整数.
+
+    """
 
     UINT8 = auto()
     UINT16 = auto()
@@ -63,7 +77,48 @@ class ControlItem:
 
 
 class ControlTable(Enum):
-    """Dynamixelのコントロールテーブル."""
+    """
+    Dynamixelのコントロールテーブル.
+
+    References
+    ----------
+    - [X Series Control table](https://www.besttechnology.co.jp/modules/knowledge/?X%20Series%20Control%20table)
+
+    Attributes
+    ----------
+    MODEL_NUMBER : ControlItem
+        Dynamixelのモデル番号.
+        モデル固有の値を保持します.
+        異なる種類のDynamixelを混在して使用する際の個体識別などに使用できます.
+    MODEL_INFORMATION : ControlItem
+        Dynamixelのモデル情報.
+        異なる種類のDynamixelを混在して使用する際の個体識別などに使用できます.
+    VERSION_OF_FIRMWARE : ControlItem
+        内蔵されるCPUに書き込まれたプログラムのバージョンです.
+        ファームウェアの更新を行った際に合わせて自動的に変更されます.
+    ID : ControlItem
+        各Dynamixelを特定するための固有の値で0~252の範囲の数値で設定します.
+        同一ネットワーク内に存在するDynamixelには各々異なるIDが要求されます.
+    BAUDRATE : ControlItem
+        通信する際のボーレートです.
+        ホストとDynamixelのボーレートは一致させなくてはなりません.
+        詳しくは `::: Baudrate` を参照.
+    RETURN_DELAY_TIME : ControlItem
+        インストラクションパケットが送られた後、ステータスパケットを返すまでの待ち時間を設定します.
+        0を設定しても問題ありません.
+
+        `Delay Time [us] = Value * 2 [us]`
+    DRIVE_MODE : ControlItem
+        デフォルト回転方向・デュアルジョイント・プロファイル構成を設定します。
+        デフォルト回転方向によりはPosition, Velocity, PWMの各指令によるホーンの回転方向が変化します.
+
+        - `0`: Direction of rotation (0:Normal, 1:Reverse)
+        - `1`: Profile configuration (0:Master, 1:Slaver, X540シリーズのみ)
+        - `2`: Dual Joint (0:Velocity-based Profile, 1:Time-based Profile)
+    OPERATING_MODE : ControlItem
+        動作モード. 詳しくは `::: OperatingMode` を参照.
+
+    """
 
     MODEL_NUMBER = ControlItem(
         address=0,
@@ -428,6 +483,44 @@ class OperatingMode(Enum):
     EXTENDED_POSITION_CONTROL_MODE = 4
     CURRENT_BASE_POSITION_CONTROL_MODE = 5
     PWM_CONTROL_MODE = 16
+
+
+class Baudrate(Enum):
+    """
+    通信する際のボーレート.
+
+    Notes
+    -----
+    - デフォルトでは `Baudrate.BPS_1M` が設定されているはず.
+    - ホストのボーレートはBPS値を直接指定するので注意.
+    - ホストとボーレートが合わないと通信できないので注意.
+
+    Attributes
+    ----------
+    BPS_9600 : int
+        9600bps.
+    BPS_57600 : int
+        57600bps.
+    BPS_115200 : int
+        115200bps.
+    BPS_1M : int
+        1Mbps.
+    BPS_2M : int
+        2Mbps.
+    BPS_3M : int
+        3Mbps.
+    BPS_4M : int
+        4Mbps.
+
+    """
+
+    BPS_9600 = 1
+    BPS_57600 = 2
+    BPS_115200 = 3
+    BPS_1M = 4
+    BPS_2M = 5
+    BPS_3M = 6
+    BPS_4M = 7
 
 
 def cast_value(value: float, dtype: Dtype) -> int:

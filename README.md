@@ -6,10 +6,7 @@
 [![mypy](https://img.shields.io/badge/mypy-checked-blue)](http://mypy-lang.org/)
 [![Lint and Test](https://github.com/nomutin/Robopy/actions/workflows/ci.yaml/badge.svg)](https://github.com/nomutin/Robopy/actions/workflows/ci.yaml)
 
-Python だけでロボットを動かすためのAPIです.
-
-## Features
-
+Python だけでロボットを動かすためのAPIです.  
 研究室の機器なら大体動かせるはずです.
 
 * [x] [OpenManipulatorX](https://emanual.robotis.com/docs/en/platform/openmanipulator_x/overview/)
