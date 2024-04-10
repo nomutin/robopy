@@ -1,3 +1,5 @@
+"""Webカメラの制御を行うモジュール."""
+
 import cv2
 import numpy as np
 import numpy.typing as npt

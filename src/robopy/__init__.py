@@ -1,3 +1,5 @@
+"""`from robopy import xxx` のためのショートカット."""
+
 from robopy.camera import CameraDriver
 from robopy.control_table import ControlTable, OperatingMode, cast_value
 from robopy.dynamixel import DynamixelCommError, DynamixelDriver

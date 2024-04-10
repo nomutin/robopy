@@ -9,10 +9,14 @@ Dynamixelを組み合わせたロボットを制御するクラス.
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import dynamixel_sdk
 
-from robopy.control_table import ControlTable
 from robopy.dynamixel import DynamixelDriver
+
+if TYPE_CHECKING:
+    from robopy.control_table import ControlTable
 
 __all__ = ["RobotDriver"]
 
@@ -36,7 +40,7 @@ class RobotDriver:
             `ls /dev` で確認できる.
         baudrate : int
             ボーレート. サーボに設定された値と揃える必要がある.
-        servo_id : int
+        servo_ids : int
             サーボのID. packetHandlerの通信の確認に使用する.
 
         Raises
