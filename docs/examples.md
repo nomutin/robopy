@@ -19,7 +19,6 @@ def generate_table() -> Table:
     table = Table(title=f"Control Table of {port_name}")
     table.add_column("Address", justify="right")
     table.add_column("Table Item", justify="left")
-    table.add_column("Description", justify="left")
     table.add_column("Dtype", justify="right")
     table.add_column("Access", justify="left")
 
@@ -37,7 +36,6 @@ def generate_table() -> Table:
         table.add_row(
             str(control_table.value.address),
             control_table.name,
-            control_table.value.description,
             control_table.value.dtype.name,
             control_table.value.access,
             *[str(i) for i in robot.read(control_table)],

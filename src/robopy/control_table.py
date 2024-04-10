@@ -56,8 +56,6 @@ class ControlItem:
     access : Literal['R', 'R/W', 'R/W(NVM)']
         アクセス権限.
         `NVM`(不揮発メモリ)の書き換えを行う場合はトルクを切る必要がある.
-    description : str
-        項目の軽い説明.
 
     """
 
@@ -65,16 +63,11 @@ class ControlItem:
     num_bytes: Literal[1, 2, 4]
     dtype: Dtype
     access: Literal["R", "R/W", "R/W(NVM)"]
-    description: str
 
 
 class ControlTable(Enum):
     """
     Dynamixelのコントロールテーブル.
-
-    References
-    ----------
-    - [X Series Control table](https://www.besttechnology.co.jp/modules/knowledge/?X%20Series%20Control%20table)
 
     Attributes
     ----------
@@ -205,328 +198,52 @@ class ControlTable(Enum):
 
     """
 
-    MODEL_NUMBER = ControlItem(
-        address=0,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R",
-        description="Dynamixelのモデル番号",
-    )
-    MODEL_INFORMATION = ControlItem(
-        address=2,
-        num_bytes=4,
-        dtype=Dtype.UINT32,
-        access="R",
-        description="Dynamixelのモデル情報",
-    )
-    VERSION_OF_FIRMWARE = ControlItem(
-        address=6,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R",
-        description="ファームウェアのバージョン",
-    )
-    ID = ControlItem(
-        address=7,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R/W(NVM)",
-        description="固有のID",
-    )
-    BAUDRATE = ControlItem(
-        address=8,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R/W(NVM)",
-        description="通信する際のボーレート, 0~7をとる",
-    )
-    RETURN_DELAY_TIME = ControlItem(
-        address=9,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R/W(NVM)",
-        description="応答遅延時間, 0でも問題ない",
-    )
-    DRIVE_MODE = ControlItem(
-        address=10,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R/W(NVM)",
-        description="回転方向などの設定",
-    )
-    OPERATING_MODE = ControlItem(
-        address=11,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R/W(NVM)",
-        description="動作モード",
-    )
-    SECONDARY_ID = ControlItem(
-        address=12,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R/W(NVM)",
-        description="識別のための2個目のID",
-    )
-    PROTOCOL_VERSION = ControlItem(
-        address=13,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R",
-        description="プロトコル",
-    )
-    HOMING_OFFSET = ControlItem(
-        address=20,
-        num_bytes=4,
-        dtype=Dtype.INT32,
-        access="R/W(NVM)",
-        description="真の現在位置-PRESENT_POSITION",
-    )
-    MOVING_THRESHOLD = ControlItem(
-        address=24,
-        num_bytes=4,
-        dtype=Dtype.UINT32,
-        access="R/W(NVM)",
-        description="移動中かどうかのしきい値",
-    )
-    TEMPERATURE_LIMIT = ControlItem(
-        address=31,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R/W(NVM)",
-        description="温度の上限値",
-    )
-    MAX_VOLTAGE_LIMIT = ControlItem(
-        address=32,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R/W(NVM)",
-        description="印加電圧の上限値",
-    )
-    MIN_VOLTAGE_LIMIT = ControlItem(
-        address=34,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R/W(NVM)",
-        description="印加電圧の下限値",
-    )
-    PWM_LIMIT = ControlItem(
-        address=36,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R/W(NVM)",
-        description="GOAL_PWMの絶対値の最大値",
-    )
-    CURRENT_LIMIT = ControlItem(
-        address=38,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R/W(NVM)",
-        description="GOAL_CURRENTの絶対値の最大値",
-    )
-    ACCELERATION_LIMIT = ControlItem(
-        address=40,
-        num_bytes=4,
-        dtype=Dtype.UINT32,
-        access="R/W(NVM)",
-        description="PROFILE_ACCELERATIONの最大値",
-    )
-    VELOCITY_LIMIT = ControlItem(
-        address=44,
-        num_bytes=4,
-        dtype=Dtype.UINT32,
-        access="R/W(NVM)",
-        description="GOAL_VELOCITYの絶対値の最大値",
-    )
-    MAX_POSITION_LIMIT = ControlItem(
-        address=48,
-        num_bytes=4,
-        dtype=Dtype.INT32,
-        access="R/W(NVM)",
-        description="GOAL_POSITIONの最大値",
-    )
-    MIN_POSITION_LIMIT = ControlItem(
-        address=52,
-        num_bytes=4,
-        dtype=Dtype.INT32,
-        access="R/W(NVM)",
-        description="GOAL_POSITIONの最小値",
-    )
-    SHUTDOWN = ControlItem(
-        address=63,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R/W",
-        description="シャットダウン状態, 0がON",
-    )
-    LED = ControlItem(
-        address=65,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R/W",
-        description="LEDのON/OFF, 0がOFF",
-    )
-    TORQUE_ENABLE = ControlItem(
-        address=64,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R/W",
-        description="トルクのON/OFF, 0がOFF",
-    )
-    HARDWARE_ERROR_STATUS = ControlItem(
-        address=70,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R",
-        description="ハードウェアエラーのステータス",
-    )
-    VELOCITY_I_GAIN = ControlItem(
-        address=76,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R/W",
-        description="速度制御のIゲイン",
-    )
-    VELOCITY_P_GAIN = ControlItem(
-        address=78,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R/W",
-        description="速度制御のPゲイン",
-    )
-    POSITION_D_GAIN = ControlItem(
-        address=80,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R/W",
-        description="位置制御のDゲイン",
-    )
-    POSITION_I_GAIN = ControlItem(
-        address=82,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R/W",
-        description="位置制御のIゲイン",
-    )
-    POSITION_P_GAIN = ControlItem(
-        address=84,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R/W",
-        description="位置制御のPゲイン",
-    )
-    GOAL_PWM = ControlItem(
-        address=100,
-        num_bytes=2,
-        dtype=Dtype.INT16,
-        access="R/W",
-        description="PWM制御の目標値",
-    )
-    GOAL_CURRENT = ControlItem(
-        address=102,
-        num_bytes=2,
-        dtype=Dtype.INT16,
-        access="R/W",
-        description="電流制御の目標値",
-    )
-    GOAL_VELOCITY = ControlItem(
-        address=104,
-        num_bytes=4,
-        dtype=Dtype.INT32,
-        access="R/W",
-        description="速度制御の目標値",
-    )
-    PROFILE_ACCELERATION = ControlItem(
-        address=108,
-        num_bytes=4,
-        dtype=Dtype.UINT32,
-        access="R/W",
-        description="Profileの加速度or加速時間",
-    )
-    PROFILE_VELOCITY = ControlItem(
-        address=112,
-        num_bytes=4,
-        dtype=Dtype.UINT32,
-        access="R/W",
-        description="Profileの最大速度",
-    )
-    GOAL_POSITION = ControlItem(
-        address=116,
-        num_bytes=4,
-        dtype=Dtype.INT32,
-        access="R/W",
-        description="位置制御の目標値",
-    )
-    REALTIME_TICK = ControlItem(
-        address=120,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R",
-        description="リアルタイムカウンタ(1ms周期)",
-    )
-    MOVING_STATUS = ControlItem(
-        address=122,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R",
-        description="動作中の状況",
-    )
-    PRESENT_PWM = ControlItem(
-        address=124,
-        num_bytes=2,
-        dtype=Dtype.INT16,
-        access="R",
-        description="制御中のPWM出力値",
-    )
-    PRESENT_CURRENT = ControlItem(
-        address=126,
-        num_bytes=2,
-        dtype=Dtype.INT16,
-        access="R",
-        description="サーボへ流れている電流値",
-    )
-    PRESENT_VELOCITY = ControlItem(
-        address=128,
-        num_bytes=4,
-        dtype=Dtype.INT32,
-        access="R",
-        description="出力軸の回転数",
-    )
-    PRESENT_POSITION = ControlItem(
-        address=132,
-        num_bytes=4,
-        dtype=Dtype.INT32,
-        access="R",
-        description="真の位置-Homing Offset",
-    )
-    VELOCITY_TRAJECTORY = ControlItem(
-        address=136,
-        num_bytes=4,
-        dtype=Dtype.INT32,
-        access="R",
-        description="Profileによって生成された目標速度",
-    )
-    POSITION_TRAJECTORY = ControlItem(
-        address=140,
-        num_bytes=4,
-        dtype=Dtype.INT32,
-        access="R",
-        description="Profileによって生成された目標位置",
-    )
-    PRESENT_INPUT_VOLTAGE = ControlItem(
-        address=144,
-        num_bytes=2,
-        dtype=Dtype.UINT16,
-        access="R",
-        description="印加電圧",
-    )
-    PRESENT_TEMPERATURE = ControlItem(
-        address=146,
-        num_bytes=1,
-        dtype=Dtype.UINT8,
-        access="R",
-        description="内部温度",
-    )
+    MODEL_NUMBER = ControlItem(0, 2, Dtype.UINT16, "R")
+    MODEL_INFORMATION = ControlItem(2, 4, Dtype.UINT32, "R")
+    VERSION_OF_FIRMWARE = ControlItem(6, 1, Dtype.UINT8, "R")
+    ID = ControlItem(7, 1, Dtype.UINT8, "R/W(NVM)")
+    BAUDRATE = ControlItem(8, 1, Dtype.UINT8, "R/W(NVM)")
+    RETURN_DELAY_TIME = ControlItem(9, 1, Dtype.UINT8, "R/W(NVM)")
+    DRIVE_MODE = ControlItem(10, 1, Dtype.UINT8, "R/W(NVM)")
+    OPERATING_MODE = ControlItem(11, 2, Dtype.UINT16, "R/W(NVM)")
+    SECONDARY_ID = ControlItem(12, 1, Dtype.UINT8, "R/W(NVM)")
+    PROTOCOL_VERSION = ControlItem(13, 1, Dtype.UINT8, "R")
+    HOMING_OFFSET = ControlItem(20, 4, Dtype.INT32, "R/W(NVM)")
+    MOVING_THRESHOLD = ControlItem(24, 4, Dtype.UINT32, "R/W(NVM)")
+    TEMPERATURE_LIMIT = ControlItem(31, 1, Dtype.UINT8, "R/W(NVM)")
+    MAX_VOLTAGE_LIMIT = ControlItem(32, 2, Dtype.UINT16, "R/W(NVM)")
+    MIN_VOLTAGE_LIMIT = ControlItem(34, 2, Dtype.UINT16, "R/W(NVM)")
+    CURRENT_LIMIT = ControlItem(38, 2, Dtype.UINT16, "R/W(NVM)")
+    PWM_LIMIT = ControlItem(40, 2, Dtype.UINT16, "R/W(NVM)")
+    ACCELERATION_LIMIT = ControlItem(44, 4, Dtype.UINT32, "R/W(NVM)")
+    VELOCITY_LIMIT = ControlItem(48, 4, Dtype.UINT32, "R/W(NVM)")
+    MAX_POSITION_LIMIT = ControlItem(52, 4, Dtype.INT32, "R/W(NVM)")
+    MIN_POSITION_LIMIT = ControlItem(56, 4, Dtype.INT32, "R/W(NVM)")
+    SHUTDOWN = ControlItem(63, 1, Dtype.UINT8, "R/W")
+    LED = ControlItem(65, 1, Dtype.UINT8, "R/W")
+    TORQUE_ENABLE = ControlItem(64, 1, Dtype.UINT8, "R/W")
+    HARDWARE_ERROR_STATUS = ControlItem(70, 1, Dtype.UINT8, "R")
+    VELOCITY_I_GAIN = ControlItem(76, 2, Dtype.UINT16, "R/W")
+    VELOCITY_P_GAIN = ControlItem(78, 2, Dtype.UINT16, "R/W")
+    POSITION_D_GAIN = ControlItem(80, 2, Dtype.UINT16, "R/W")
+    POSITION_I_GAIN = ControlItem(82, 2, Dtype.UINT16, "R/W")
+    POSITION_P_GAIN = ControlItem(84, 2, Dtype.UINT16, "R/W")
+    GOAL_PWM = ControlItem(100, 2, Dtype.INT16, "R/W")
+    GOAL_CURRENT = ControlItem(102, 2, Dtype.INT16, "R/W")
+    GOAL_VELOCITY = ControlItem(104, 4, Dtype.INT32, "R/W")
+    PROFILE_ACCELERATION = ControlItem(108, 4, Dtype.UINT32, "R/W")
+    PROFILE_VELOCITY = ControlItem(112, 4, Dtype.UINT32, "R/W")
+    GOAL_POSITION = ControlItem(116, 4, Dtype.INT32, "R/W")
+    REALTIME_TICK = ControlItem(120, 2, Dtype.UINT16, "R")
+    MOVING_STATUS = ControlItem(122, 1, Dtype.UINT8, "R")
+    PRESENT_PWM = ControlItem(124, 2, Dtype.INT16, "R")
+    PRESENT_CURRENT = ControlItem(126, 2, Dtype.INT16, "R")
+    PRESENT_VELOCITY = ControlItem(128, 4, Dtype.INT32, "R")
+    PRESENT_POSITION = ControlItem(132, 4, Dtype.INT32, "R")
+    VELOCITY_TRAJECTORY = ControlItem(136, 4, Dtype.INT32, "R")
+    POSITION_TRAJECTORY = ControlItem(140, 4, Dtype.INT32, "R")
+    PRESENT_INPUT_VOLTAGE = ControlItem(144, 2, Dtype.UINT16, "R")
+    PRESENT_TEMPERATURE = ControlItem(146, 1, Dtype.UINT8, "R")
 
     def __init__(self, control_item: ControlItem) -> None:
         """
@@ -538,7 +255,6 @@ class ControlTable(Enum):
         self.num_bytes = control_item.num_bytes
         self.dtype = control_item.dtype
         self.access = control_item.access
-        self.description = control_item.description
 
 
 class OperatingMode(Enum):

@@ -147,7 +147,7 @@ class DynamixelCommError(ConnectionError):
         dxl_comm_result_code: int,
         dxl_error_code: int,
     ) -> None:
-        """Protocol2PacketHandlerを使ってエラー内容を取得する."""
+        """`Protocol2PacketHandler` を使ってエラー内容を取得する."""
         packet_handler = dynamixel_sdk.Protocol2PacketHandler()
         dxl_comm_result = packet_handler.getTxRxResult(dxl_comm_result_code)
         dxl_error = packet_handler.getRxPacketError(dxl_error_code)
