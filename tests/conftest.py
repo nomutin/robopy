@@ -16,7 +16,7 @@ class PortHandlerMock(PortHandler):  # type: ignore[misc]
         """
         `setBaudRate`のモック.
 
-        通信の部分を削除し、ボーレートの検証のみを行う.
+        通信の部分を削除し, ボーレートの検証のみを行う.
         """
         return bool(self.getCFlagBaud(baudrate) > 0)
 

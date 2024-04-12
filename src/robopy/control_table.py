@@ -89,7 +89,7 @@ class ControlTable(Enum):
         ホストとDynamixelのボーレートは一致させる必要がある.
         詳しくは `::: Baudrate` を参照.
     RETURN_DELAY_TIME : ControlItem
-        インストラクションパケットが送られた後、ステータスパケットを返すまでの待ち時間.
+        パケットが送られた後, ステータスパケットを返すまでの待ち時間.
         0を設定しても問題ない.
 
         `Delay Time [us] = Value * 2 [us]`
@@ -104,8 +104,8 @@ class ControlTable(Enum):
         動作モード. 詳しくは `::: OperatingMode` を参照.
     SECONDARY_ID : ControlItem
         DynamixelのSecondary ID.
-        Secondary ID は、ID と同様に各 Dynamixel を識別するために用いられる.
-        なお、Secondary IDに253以上の値が設定されている場合機能しない。
+        Secondary ID は, ID と同様に各 Dynamixel を識別するために用いられる.
+        なお, Secondary IDに253以上の値が設定されている場合機能しない.
     PROTOCOL_VERSION : ControlItem
         通信プロトコルのバージョン.
         異なるプロトコルを混在させて使用する事はできない.
@@ -134,7 +134,7 @@ class ControlTable(Enum):
     MIN_VOLTAGE_LIMIT : ControlItem
         `PRESENT_INPUT_VOLTAGE` がこの値を下回ると
         `HARDWARE_ERROR_STATUS` の該当ビットがONになり,
-        `SHUTDOWN` で指定された動作に遷移する。
+        `SHUTDOWN` で指定された動作に遷移する.
     PWM_LIMIT : ControlItem
         `GOAL_PWM` の絶対値はこの値以下に制限される.
 
@@ -170,13 +170,13 @@ class ControlTable(Enum):
         - `4`: Electrical Shock Error
         - `5`: Overload Error
 
-        なお、シャットダウン状態から復帰するには発生している障害を排除した後、
-        電源の再投入か、REBOOTインストラクションパケットを受信する必要がある.
+        なお, シャットダウン状態から復帰するには発生している障害を排除した後,
+        電源の再投入か, REBOOTインストラクションパケットを受信する必要がある.
     TORQUE_ENABLE : ControlItem
-        出力軸をフリーにするか `OPERATION_MODE` に従った制御を開始する。
+        出力軸をフリーにするか `OPERATION_MODE` に従った制御を開始する.
 
         - `0`: 出力軸フリー・制御停止・ロックされたアイテムを解除
-        - `1`: `OPERATION_MODE`に従った制御開始、NVMのアイテムロック
+        - `1`: `OPERATION_MODE`に従った制御開始, NVMのアイテムロック
     LED : ControlItem
         本体に装備されたLEDを点灯/消灯する.
 
@@ -218,12 +218,12 @@ class ControlTable(Enum):
         `OPERATION_MODE` に `POSITION_CONTROL_MODE` が設定されている時に有効.
     GOAL_PWM : ControlItem
         PWMのデューティー比.
-        全ての `OPERATION_MODE`において、
+        全ての `OPERATION_MODE`において,
         制御の最終段にこの値以下にデューティー比が制限されモータへ印加される.
 
         `Duty [%] = Value * 100 [%] / 855`
     GOAL_CURRENT : ControlItem
-        電流制御演算における目標電流を指定する。
+        電流制御演算における目標電流を指定する.
         `OPERATION_MODE` に `CURRENT_*_MODE` が設定されている時に有効.
 
         `Current [mA] = Value * ScalingFactor [mA]`
@@ -247,7 +247,43 @@ class ControlTable(Enum):
         各Mode毎に指摘できる数値範囲が異なる.
     REALTIME_TICK : ControlItem
         15ビットのフリーランカウンタ. 1ms周期毎にインクリメントされる.
+    MOVING_STATUS : ControlItem
+        動作中の状況を示す.
 
+        - `0`: In-Position, 位置制御時, 目標位置到達
+        - `1`: Profile Ongoing, Goal Positionに基づくProfile進行中
+        - `3`: Following Error, 位置制御時, 位置がProfileに非追従
+    PRESENT_PWM : ControlItem
+        制御中のPWM出力値.
+
+        `Duty [%] = Value * 100 [%] / 855`
+    PRESENT_CURRENT : ControlItem
+        現在モータへ流れている電流.
+
+        `Current [mA] = Value * ScalingFactor [mA]`
+    PRESENT_VELOCITY : ControlItem
+        現在の出力軸の回転数.
+
+        `Velocity [rpm] = Value * 0.229 [rpm]`
+    PRESENT_POSITION : ControlItem
+        真の位置から `HOMING_OFFSET` を除した出力軸の位置.
+
+        `Position [deg] = Value * 360 [deg] / 4096`
+    VELOCITY_TRAJECTORY : ControlItem
+        Profileによって生成された目標速度.
+        `OPERATING_MODE` に `VELOCITY_CONTROL_MODE`・`*_POSITION_CONTROL_MODE`
+        が設定されている時に有効.
+    POSITION_TRAJECTORY : ControlItem
+        Profileによって生成された目標位置.
+        `OPERATING_MODE` に `*_POSITION_CONTROL_MODE` が設定されている時に有効.
+    PRESENT_INPUT_VOLTAGE : ControlItem
+        現在の印加電圧.
+
+        `Voltage [V] = Value * 0.1 [V]`
+    PRESENT_TEMPERATURE : ControlItem
+        現在の内部温度.
+
+        `Temperature [degC] = Value * 1 [degC]`
     """
 
     MODEL_NUMBER = ControlItem(0, 2, Dtype.UINT16, "R")
