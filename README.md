@@ -1,7 +1,7 @@
-# Robopy 🤖🐍
+# robopy 🤖🐍
 
 ![python](https://img.shields.io/badge/python-3.7%20|%203.8%20|%203.9%20|%203.10-blue)
-[![CI](https://github.com/nomutin/Robopy/actions/workflows/ci.yaml/badge.svg)](https://github.com/nomutin/Robopy/actions/workflows/ci.yaml)
+[![CI](https://github.com/nomutin/robopy/actions/workflows/ci.yaml/badge.svg)](https://github.com/nomutin/robopy/actions/workflows/ci.yaml)
 
 Python だけでロボットを動かすためのAPIです.  
 研究室の機器なら大体動かせるはずです.
@@ -13,6 +13,6 @@ Python だけでロボットを動かすためのAPIです.
 
 ## Full Documentation
 
-[![Deploy Docs](https://github.com/nomutin/Robopy/actions/workflows/docs.yaml/badge.svg)](https://github.com/nomutin/Robopy/actions/workflows/docs.yaml)
+[![Deploy Docs](https://github.com/nomutin/robopy/actions/workflows/docs.yaml/badge.svg)](https://github.com/nomutin/robopy/actions/workflows/docs.yaml)
 
-仕様やトラブルシューティングについては **[Full Documentation](https://nomutin.github.io/Robopy/)** へ
+仕様やトラブルシューティングについては **[Full Documentation](https://nomutin.github.io/robopy/)** へ
