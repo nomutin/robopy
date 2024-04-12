@@ -178,7 +178,7 @@ class ControlTable(Enum):
         - `0`: 出力軸フリー・制御停止・ロックされたアイテムを解除
         - `1`: `OPERATION_MODE`に従った制御開始、NVMのアイテムロック
     LED : ControlItem
-        本体に装備されたLEDを点灯ないし消灯する.
+        本体に装備されたLEDを点灯/消灯する.
 
         - `0`: 消灯
         - `1`: 点灯
@@ -186,15 +186,67 @@ class ControlTable(Enum):
         様々なフィードバックと内部の制御状態を比較した結果を示す.
         `SHUTDOWN`と同じ出力.
     VELOCITY_I_GAIN : ControlItem
-        速度制御演算におけるIゲインを指定する。
+        速度制御演算におけるIゲイン.
         `OPERATION_MODE` に `VELOCITY_CONTROL_MODE` が設定されている時に有効.
 
         `KvI = (Velocity I Gain) / 65536`
     VELOCITY_P_GAIN : ControlItem
-        速度制御演算におけるPゲインを指定する。
+        速度制御演算におけるPゲイン.
         `OPERATION_MODE` に `VELOCITY_CONTROL_MODE` が設定されている時に有効.
 
         `KvP = (Velocity P Gain) / 128`
+    POSITION_D_GAIN : ControlItem
+        位置制御演算におけるDゲイン.
+        `OPERATION_MODE` に `*POTION_CONTROL_MODE` が設定されているときに有効.
+
+        `KpD = (Position I Gain) / 16`
+    POSITION_I_GAIN : ControlItem
+        位置制御演算におけるIゲイン.
+        `OPERATION_MODE` に `POSITION_CONTROL_MODE` が設定されている時に有効.
+
+        `KpI = (Position I Gain) / 65536`
+    POSITION_P_GAIN : ControlItem
+        位置制御演算におけるPゲイン.
+        `OPERATION_MODE` に `POSITION_CONTROL_MODE` が設定されている時に有効.
+
+        `KpP = (Position P Gain) / 128`
+    FEEDFORWARD_ACCELERATION_GAIN : ControlItem
+        位置制御演算における加速度フィードフォワードゲイン.
+        OPERATION_MODE` に `POSITION_CONTROL_MODE` が設定されている時に有効.
+    FEEDFORWARD_VELOCITY_GAIN : ControlItem
+        位置制御演算における速度フィードフォワードゲイン.
+        `OPERATION_MODE` に `POSITION_CONTROL_MODE` が設定されている時に有効.
+    GOAL_PWM : ControlItem
+        PWMのデューティー比.
+        全ての `OPERATION_MODE`において、
+        制御の最終段にこの値以下にデューティー比が制限されモータへ印加される.
+
+        `Duty [%] = Value * 100 [%] / 855`
+    GOAL_CURRENT : ControlItem
+        電流制御演算における目標電流を指定する。
+        `OPERATION_MODE` に `CURRENT_*_MODE` が設定されている時に有効.
+
+        `Current [mA] = Value * ScalingFactor [mA]`
+    GOAL_VELOCITY : ControlItem
+        速度制御の目標値.
+        `OPERATION_MODE` に `VELOCITY_CONTROL_MODE` が設定されている時に有効.
+
+        `Velocity [rpm] = Value * 0.229 [rpm]`
+    PROFILE_ACCELERATION : ControlItem
+        Profileの加速度もしくは加速時間.
+        `OPERATION_MODE` が `CURRENT_CONTROL_MODE` 以外のときに有効.
+
+        `Acceleration [rpm²] = Value * 214.577`
+    PROFILE_VELOCITY : ControlItem
+        Profileの速度.
+        Drive ModeのProfile Configurationが0の時にProfileの最大速度を指定する.
+        `CURRENT_CONTROL_MODE` / `VELOCITY_CONTROL_MODE` 以外のとき有効.
+    GOAL_POSITION : ControlItem
+        位置制御の目標値.
+        `OPERATING_MODE` が `*_POSITION_CONTROL_MODE` のとき有効.
+        各Mode毎に指摘できる数値範囲が異なる.
+    REALTIME_TICK : ControlItem
+        15ビットのフリーランカウンタ. 1ms周期毎にインクリメントされる.
 
     """
 
@@ -228,6 +280,8 @@ class ControlTable(Enum):
     POSITION_D_GAIN = ControlItem(80, 2, Dtype.UINT16, "R/W")
     POSITION_I_GAIN = ControlItem(82, 2, Dtype.UINT16, "R/W")
     POSITION_P_GAIN = ControlItem(84, 2, Dtype.UINT16, "R/W")
+    FEEDFORWARD_ACCELERATION_GAIN = ControlItem(88, 2, Dtype.UINT16, "R/W")
+    FEEDFORWARD_VELOCITY_GAIN = ControlItem(90, 2, Dtype.UINT16, "R/W")
     GOAL_PWM = ControlItem(100, 2, Dtype.INT16, "R/W")
     GOAL_CURRENT = ControlItem(102, 2, Dtype.INT16, "R/W")
     GOAL_VELOCITY = ControlItem(104, 4, Dtype.INT32, "R/W")

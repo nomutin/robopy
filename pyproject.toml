@@ -83,3 +83,6 @@ preview = true
 
 [tool.ruff.lint.isort]
 known-first-party = ["robopy"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"

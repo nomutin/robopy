@@ -64,10 +64,6 @@ class CameraDriver(cv2.VideoCapture):
         カメラによっては, 帰ってくる画像が BGR になっていたり,
         チャネルの次元が無かったりするので注意.
 
-        Parameters
-        ----------
-        None
-
         Returns
         -------
         np.ndarray

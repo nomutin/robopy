@@ -75,12 +75,12 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Getting started: getting-started.md
-  - Examples: examples.md
   - API Reference:
     - control_table.py: api/control-table.md
     - dynamixel.py: api/dynamixel.md
     - robot.py: api/robot.md
     - camera.py: api/camera.md
+  - Examples: examples.md
   - Q&A: qa.md
 
 extra:
