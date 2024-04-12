@@ -27,48 +27,27 @@ print(f"Available cameras: {available_cameras}")
 ## RobotDriver で使用する servo_id がわからない
 
 ```python
-"""サーボの`motor_id`を特定するためのスクリプト."""
-
 from dynamixel_sdk import COMM_SUCCESS, PortHandler, Protocol2PacketHandler
-from tqdm import tqdm
 
 device_name = "/dev/ttyUSB1"
-baudrates = [
-    9600,
-    19200,
-    38400,
-    57600,
-    115200,
-    230400,
-    460800,
-    500000,
-    576000,
-    921600,
-    1000000,
-    1152000,
-    2000000,
-    2500000,
-    3000000,
-    3500000,
-    4000000,
-]
+baudrates = [9600, 57600, 115200, 1000000, 2000000, 3000000, 4000000]
+servo_ids = list(range(254))
 
-for baudrate in baudrates:
+
+for servo_id, baudrate in product(baudrates, servo_ids):
     port_handler = PortHandler(device_name)
     packet_handler = Protocol2PacketHandler()
 
     if not port_handler.openPort():
-        msg = f"Failed to open port {device_name}"
-        raise RuntimeError(msg)
+        continue
 
     if not port_handler.setBaudRate(baudrate):
-        msg = f"Failed to set baudrate to {baudrate}"
+        continue
         raise RuntimeError(msg)
 
-    for dxl_id in tqdm(range(254)):
-        _, comm_result, dxl_error = packet_handler.ping(port_handler, dxl_id)
-        if comm_result == COMM_SUCCESS:
-            print(f"[{baudrate=} {dxl_id=}] ping succeeded.")
+    _, comm_result, dxl_error = packet_handler.ping(port_handler, servo_id)
+    if comm_result == COMM_SUCCESS:
+        print(f"[{baudrate=} {servo_id=}] ping succeeded.")
 
     port_handler.closePort()
 ```
