@@ -1,4 +1,11 @@
-"""Dynamixel サーボモータの制御."""
+"""
+Dynamixel サーボモータの制御.
+
+References
+----------
+- [AlexanderKoch-Koch/low_cost_robot](https://github.com/AlexanderKoch-Koch/low_cost_robot)
+- [wuphilipp/gello_software](https://github.com/wuphilipp/gello_software)
+"""
 
 import dynamixel_sdk
 

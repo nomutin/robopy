@@ -1,4 +1,11 @@
-"""Dynamixel を組み合わせたロボットを制御するクラス."""
+"""
+Dynamixel を組み合わせたロボットを制御するクラス.
+
+References
+----------
+- [AlexanderKoch-Koch/low_cost_robot](https://github.com/AlexanderKoch-Koch/low_cost_robot)
+- [wuphilipp/gello_software](https://github.com/wuphilipp/gello_software)
+"""
 
 from __future__ import annotations
 
