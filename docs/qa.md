@@ -1,9 +1,9 @@
 # Q&A
 
-## CameraDriver で使用する camera_id がわからない
+## `CameraDriver` で使用する `camera_id` がわからない
 
 まず、USBポートにカメラが接続されているかを確認してください.  
-その後、[opencv-python](https://pypi.org/project/opencv-python/) を使って総当たりでカメラを探すことができます.  
+その後、[opencv-python](https://pypi.org/project/opencv-python/) を使って総当たりでカメラを探すことができます.
 
 ```python
 import cv2
@@ -22,9 +22,11 @@ print(f"Available cameras: {available_cameras}")
 
 このようなコードを実行して、利用可能なカメラのIDを調べてください.
 
-## `RobotDriver` で使用する port がわからない
+## `RobotDriver` で使用する `port_name` がわからない
 
-## `RobotDriver` で使用する servo_id がわからない
+Linux の場合は `ls /dev/ttyUSB*`, Mac の場合は`ls /dev/tty.*` で表示されるディレクトリ名が `port_name` になります.
+
+## `RobotDriver` で使用する `servo_id` がわからない
 
 ```python
 from itertools import product
@@ -50,5 +52,3 @@ for servo_id, baudrate in product(baudrates, servo_ids):
 
     port_handler.closePort()
 ```
-
-## `RobotDriver` のインスタンス作成に失敗する
