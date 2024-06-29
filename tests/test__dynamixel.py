@@ -1,4 +1,3 @@
-# ruff: noqa: S101, N802, ARG001
 """`utils.py`のユニットテスト."""
 
 from __future__ import annotations
@@ -22,5 +21,5 @@ def test__dynamixel_comm_error() -> None:
         """\
         Test message
         dxl_comm_result='[TxRxResult] Failed get status packet from device!'
-        dxl_error='[RxPacketError] The data value is out of range!'"""
+        dxl_error='[RxPacketError] The data value is out of range!'""",
     )

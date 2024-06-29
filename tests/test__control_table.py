@@ -1,4 +1,3 @@
-# ruff: noqa: S101, PLR2004
 """`control_table.py`のユニットテスト."""
 
 import pytest

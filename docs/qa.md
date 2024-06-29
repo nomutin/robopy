@@ -24,26 +24,25 @@ print(f"Available cameras: {available_cameras}")
 
 ## `RobotDriver` で使用する port がわからない
 
-## RobotDriver で使用する servo_id がわからない
+## `RobotDriver` で使用する servo_id がわからない
 
 ```python
+from itertools import product
 from dynamixel_sdk import COMM_SUCCESS, PortHandler, Protocol2PacketHandler
 
 device_name = "/dev/ttyUSB1"
 baudrates = [9600, 57600, 115200, 1000000, 2000000, 3000000, 4000000]
 servo_ids = list(range(254))
 
+port_handler = PortHandler(device_name)
+packet_handler = Protocol2PacketHandler()
+
+if not port_handler.openPort():
+    raise RuntimeError("Failed to open port.")
 
 for servo_id, baudrate in product(baudrates, servo_ids):
-    port_handler = PortHandler(device_name)
-    packet_handler = Protocol2PacketHandler()
-
-    if not port_handler.openPort():
-        continue
-
     if not port_handler.setBaudRate(baudrate):
         continue
-        raise RuntimeError(msg)
 
     _, comm_result, dxl_error = packet_handler.ping(port_handler, servo_id)
     if comm_result == COMM_SUCCESS:
@@ -52,4 +51,4 @@ for servo_id, baudrate in product(baudrates, servo_ids):
     port_handler.closePort()
 ```
 
-## RobotDriverのインスタンス作成に失敗する
+## `RobotDriver` のインスタンス作成に失敗する
