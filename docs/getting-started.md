@@ -42,7 +42,7 @@
 ## with git
 
 もし robopy の機能をいじりたい場合は、ソースコードを直接いじるのもいいでしょう.  
-詳細な仕様については [API Document](api.md) を参照してください.
+詳細な仕様については [API Document](api/camera.md) を参照してください.
 [Issue](https://github.com/nomutin/robopy/issues) や [Pull Request](https://github.com/nomutin/robopy/pulls) は大歓迎です.
 
     git clone https://github.com/nomutin/robopy.git

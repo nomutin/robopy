@@ -76,13 +76,12 @@ nav:
   - Home: index.md
   - Getting started: getting-started.md
   - Usage: usage.md
-  - Examples: examples.md
   - Q&A: qa.md
   - API Reference:
+    - camera.py: api/camera.md
+    - robot.py: api/robot.md
     - control_table.py: api/control-table.md
     - dynamixel.py: api/dynamixel.md
-    - robot.py: api/robot.md
-    - camera.py: api/camera.md
 
 extra:
   social:
