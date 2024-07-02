@@ -14,12 +14,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up rye
-        uses: zztkm/setup-rye@use-uv
-        with:
-          use-uv: 'true'
+        uses: eifinger/setup-rye@v3
       - name: Install dependencies
-        run: rye sync --no-lock
+        run: |
+          rye config --set-bool behavior.use-uv=true
+          rye sync --no-lock
       - name: Run lint
-        run: rye run lint
-      - name: Run test
-        run: rye run test
+        run: |
+          rye lint
+      - name: Run tests
+        run: |
+          rye test
