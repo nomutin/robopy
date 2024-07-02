@@ -2,6 +2,8 @@
 
 ## Dynamixel Wizard
 
+CLI で[Dynamixel Wizard](https://emanual.robotis.com/docs/en/software/dynamixel/dynamixel_wizard2/) みたいなことができます.
+
 ```python
 from rich.live import Live
 from rich.table import Table
@@ -51,9 +53,9 @@ with Live(generate_table()) as live:
 
 ## Leader-Follower
 
-```python
-from __future__ import annotations
+2つの `RobotDriver` を用いて同期処理で Leader-Fllower が実現できます.
 
+```python
 import threading
 import time
 from pathlib import Path

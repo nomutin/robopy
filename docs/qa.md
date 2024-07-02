@@ -20,13 +20,52 @@ for camera_id in range(20):
 print(f"Available cameras: {available_cameras}")
 ```
 
-このようなコードを実行して、利用可能なカメラのIDを調べてください.
+## `CameraDriver` の映像が見たい
+
+[Flask](https://flask.palletsprojects.com/en/3.0.x/) を使うと見やすいです.
+
+```python
+from collections.abc import Iterator
+import cv2
+from flask import Flask, Response
+
+CAMERA_INDEX = 0
+MIMETYPE = "multipart/x-mixed-replace; boundary=frame"
+FRAME_BOUNDARY = b"--frame\r\nContent-Type: image/jpeg\r\n\r\n"
+app = Flask(__name__)
+
+def video_frame_generator() -> Iterator[bytes]:
+    cap = cv2.VideoCapture(CAMERA_INDEX)
+    while True:
+        success, frame = cap.read()
+        if not success:
+            break
+        _, buffer = cv2.imencode(".jpg", frame)
+        frame_bytes = buffer.tobytes()
+        yield b"".join([FRAME_BOUNDARY, frame_bytes, b"\r\n"])
+
+@app.route("/")
+def stream_video() -> Response:
+    return Response(video_frame_generator(), mimetype=MIMETYPE)
+
+if __name__ == "__main__":
+    app.run(host="localhost", port=8000)
+```
+
+リモートサーバで実行する際には`80`のSSHトンネリングが必要です.
+
+```sh
+ssh -L 8000:localhost:8000
+```
 
 ## `RobotDriver` で使用する `port_name` がわからない
 
-Linux の場合は `ls /dev/ttyUSB*`, Mac の場合は`ls /dev/tty.*` で表示されるディレクトリ名が `port_name` になります.
+Linux の場合は `ls /dev/ttyUSB*`, Mac の場合は`ls /dev/tty.*` で表示されるファイル名が `port_name` になります.
 
-## `RobotDriver` で使用する `servo_id` がわからない
+## `RobotDriver` で使用する `servo_id`・`baudrate` がわからない
+
+`RobotDriver` をインスタンス化するには, 各サーボに書き込まれている ID と ボーレート の正しい組み合わせが必要になります.
+総当たりで調べましょう.
 
 ```python
 from itertools import product
