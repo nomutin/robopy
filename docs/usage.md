@@ -14,9 +14,13 @@ Web カメラを使用するには, [`CameraDriver`][src.robopy.camera.CameraDri
 
 ### Leader-Follower
 
-- 2つの RobotDriver を用いて同期処理で Leader-Fllower が実現できます.  
-- トルクの ON/OFF には `RobotDriver.write` のアドレスに `ControlTable.TORQUE_ENABLE` を指定します.  
-- 位置の制御には `RobotDriver.read/write` のアドレスに `ControlTable.GOAL_POSITION` を指定します.
+2つの RobotDriver を用いて同期処理で Leader-Fllower が実現できます.  
+
+- トルクの ON/OFF には `RobotDriver.write` のアドレスに `ControlTable.TORQUE_ENABLE` を指定します.
+  - トルクの有効かには `1` を各サーボに送信します.
+  - トルクの無効化には `0` を各サーボに送信します.
+- 位置の取得には `RobotDriver.read` のアドレスに `ControlTable.GOAL_POSITION` を指定します.
+- 位置の設定には `RobotDriver.write` のアドレスに `ControlTable.GOAL_POSITION` を指定します.
 
 ```python
 import time
