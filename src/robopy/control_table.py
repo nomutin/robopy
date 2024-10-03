@@ -29,6 +29,8 @@ class Dtype(Enum):
         32bit符号なし整数.
     INT16 : int
         16bit符号あり整数.
+    INT32 : int
+        32bit符号あり整数.
 
     """
 
@@ -335,11 +337,6 @@ class ControlTable(Enum):
     PRESENT_TEMPERATURE = ControlItem(146, 1, Dtype.UINT8, "R")
 
     def __init__(self, control_item: ControlItem) -> None:
-        """
-        コントロールテーブルの各項目のデータ構造を設定する.
-
-        これが無いと `ControlTable.BAUDRATE.address` みたいなアクセスができない
-        """
         self.address = control_item.address
         self.num_bytes = control_item.num_bytes
         self.dtype = control_item.dtype
@@ -419,6 +416,18 @@ def cast_value(value: float, dtype: Dtype) -> int:
 
     PRESENT_POSITIONやPRESENT_CURRENTは値の範囲を超えた値を
     取得してきてしまう場合があるらしい.
+
+    Parameters
+    ----------
+    value : float
+        キャストする値.
+    dtype : Dtype
+        キャストするデータ型.
+
+    Returns
+    -------
+    int
+        キャスト後の値.
 
     Examples
     --------
