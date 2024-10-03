@@ -16,6 +16,16 @@ class PortHandlerMock(PortHandler):  # type: ignore[misc]
         `setBaudRate`のモック.
 
         通信の部分を削除し, ボーレートの検証のみを行う.
+
+        Parameters
+        ----------
+        baudrate : int
+            ボーレート.
+
+        Returns
+        -------
+        bool
+            ボーレートが正常に設定されたかどうか.
         """
         return bool(self.getCFlagBaud(baudrate) > 0)
 
@@ -32,6 +42,23 @@ class Protocol2PacketHandlerMock(Protocol2PacketHandler):  # type: ignore[misc]
         `ping`のモック.
 
         通信を行わず, ポートメイトとサーボIDからstatusを返す.
+
+        Parameters
+        ----------
+        port : PortHandler
+            ポートハンドラ.
+        dxl_id : int
+            サーボID.
+
+        Returns
+        -------
+        tuple[int, int, int]
+            model_number : int
+                サーボのモデル番号.
+            dxl_comm_result : int
+                通信結果.
+            dxl_error : int
+                エラーの種類.
         """
         model_number = 0
         is_valid_port = port.port_name == "/dev/ttyUSB0"
@@ -41,7 +68,7 @@ class Protocol2PacketHandlerMock(Protocol2PacketHandler):  # type: ignore[misc]
         return model_number, COMM_RX_FAIL, 0
 
 
-@pytest.fixture()
+@pytest.fixture
 def _mock_handlers(monkeypatch: pytest.MonkeyPatch) -> None:
     """PortHandlerとProtocol2PacketHandlerのモックを適用する."""
     monkeypatch.setattr(

@@ -1,41 +1,30 @@
 [project]
 name = "robopy"
-version = "0.1.1"
+version = "0.1.2"
 description = "Pythonだけでロボットを動かすためのAPI"
+readme = "README.md"
+requires-python = ">=3.8"
 dependencies = [
     "dynamixel-sdk>=3.7.31",
-    "opencv-python>=4.9.0.80",
+    "opencv-python>=4.10.0.84",
 ]
-readme = "README.md"
-requires-python = ">= 3.8"
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.rye]
-managed = true
-dev-dependencies = [
-    "ruff>=0.5.0",
-    "mypy>=1.9.0",
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.11.2",
+    "pydoclint>=0.5.9",
     "pytest-cov>=5.0.0",
     "pytest-mock>=3.14.0",
-    "mkdocs>=1.5.3",
-    "mkdocstrings[python]>=0.24.3",
-    "mkdocs-material>=9.5.17",
+    "ruff>=0.6.8",
+]
+doc = [
+    "mkdocs-material>=9.5.39",
+    "mkdocs>=1.6.1",
+    "mkdocstrings[python]>=0.26.1",
 ]
 
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/robopy"]
-
-[tool.rye.scripts]
-test = { chain = ["pytest -ra --cov=src --cov-report=term --cov-report=xml"] }
-
 [tool.mypy]
-python_version = 3.8
+python_version = "3.8"
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
@@ -60,7 +49,7 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 [tool.ruff.lint.per-file-ignores]
 "src/robopy/control_table.py" = ["PLR2004"]
 "tests/test__control_table.py" = ["PLR2004"]
-"tests/*.py" = ["S101"]
+"tests/*.py" = ["S101", "DOC501"]
 
 [tool.ruff.format]
 preview = true
@@ -70,3 +59,7 @@ known-first-party = ["robopy"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
+[tool.pydoclint]
+style = 'numpy'
+exclude = '\.git|\.ruff_cache|\.mypy_cache|\.venv'

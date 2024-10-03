@@ -22,7 +22,29 @@ __all__ = ["RobotDriver"]
 
 
 class RobotDriver:
-    """ロボット全体のクラス."""
+    """
+    ロボット全体のクラス.
+
+    Parameters
+    ----------
+    port_name : str
+        シリアルポートの名前.
+        `ls /dev` で確認できる.
+    baudrate : int
+        ボーレート. サーボに設定された値と揃える必要がある.
+    servo_ids : list[int]
+        サーボのID. packetHandlerの通信の確認に使用する.
+
+    Raises
+    ------
+    RuntimeError
+        次のうちどれかが発生した場合.
+
+        - ポートのオープンに失敗した場合
+        - ボーレートの設定に失敗した場合
+        - 全サーボのpingに失敗した場合
+
+    """
 
     def __init__(
         self,
@@ -30,29 +52,6 @@ class RobotDriver:
         baudrate: int,
         servo_ids: list[int],
     ) -> None:
-        """
-        接続と各サーボのI/Oの確立.
-
-        Parameters
-        ----------
-        port_name : str
-            シリアルポートの名前.
-            `ls /dev` で確認できる.
-        baudrate : int
-            ボーレート. サーボに設定された値と揃える必要がある.
-        servo_ids : int
-            サーボのID. packetHandlerの通信の確認に使用する.
-
-        Raises
-        ------
-        RuntimeError
-            次のうちどれかが発生した場合.
-
-            - ポートのオープンに失敗した場合
-            - ボーレートの設定に失敗した場合
-            - 全サーボのpingに失敗した場合
-
-        """
         self.port_handler = dynamixel_sdk.PortHandler(port_name=port_name)
         self.packet_handler = dynamixel_sdk.Protocol2PacketHandler()
 
@@ -106,15 +105,6 @@ class RobotDriver:
         values : list[int]
             書き込む値.
 
-        Returns
-        -------
-        None
-
-        Raises
-        ------
-        DynamixelCommError
-            どれかのサーボの書き込みに失敗した場合.
-
         """
         for servo, value in zip(self.servos, values):
             servo.write(control_table, value)
@@ -143,11 +133,6 @@ class RobotDriver:
         -------
         list[int]
             各サーボからの値.
-
-        Raises
-        ------
-        DynamixelCommError
-            どれかのサーボの読み取りに失敗した場合.
 
         """
         return [servo.read(control_table) for servo in self.servos]

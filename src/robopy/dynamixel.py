@@ -13,7 +13,18 @@ from robopy.control_table import ControlTable, cast_value
 
 
 class DynamixelDriver:
-    """Dynamixelを1個単位で制御するためのクラス."""
+    """
+    Dynamixelを1個単位で制御するためのクラス.
+
+    Parameters
+    ----------
+    servo_id : int
+        DynamixelのID.
+    port_handler : dynamixel_sdk.PortHandler
+        シリアル通信のためのハンドラ.
+    packet_handler : dynamixel_sdk.Protocol2PacketHandler
+        パケットのためのハンドラ.
+    """
 
     def __init__(
         self,
@@ -21,19 +32,6 @@ class DynamixelDriver:
         port_handler: dynamixel_sdk.PortHandler,
         packet_handler: dynamixel_sdk.Protocol2PacketHandler,
     ) -> None:
-        """
-        通信のためのハンドラ等を設定する.
-
-        Parameters
-        ----------
-        servo_id : int
-            DynamixelのID.
-        port_handler : PortHandler
-            シリアル通信のためのハンドラ.
-        packet_handler : Protocol2PacketHandler
-            パケットのためのハンドラ.
-
-        """
         self.servo_id = servo_id
         self.port_handler = port_handler
         self.packet_handler = packet_handler
@@ -109,10 +107,6 @@ class DynamixelDriver:
         value : int
             書き込む値.
 
-        Returns
-        -------
-        None
-
         Raises
         ------
         DynamixelCommError
@@ -146,6 +140,15 @@ class DynamixelCommError(ConnectionError):
     `dxl_comm_result_code` と `dxl_error_code` は
     `dynamixel_sdk.packetHandler` のread/write系メソッドの返り値に対応する.
 
+    Parameters
+    ----------
+    message : str
+        エラーメッセージ.
+    dxl_comm_result_code : int
+        `dynamixel_sdk.packetHandler` の通信結果コード.
+    dxl_error_code : int
+        `dynamixel_sdk.packetHandler` のエラーコード.
+
     """
 
     def __init__(
@@ -154,7 +157,6 @@ class DynamixelCommError(ConnectionError):
         dxl_comm_result_code: int,
         dxl_error_code: int,
     ) -> None:
-        """`Protocol2PacketHandler` を使ってエラー内容を取得する."""
         packet_handler = dynamixel_sdk.Protocol2PacketHandler()
         dxl_comm_result = packet_handler.getTxRxResult(dxl_comm_result_code)
         dxl_error = packet_handler.getRxPacketError(dxl_error_code)

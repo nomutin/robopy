@@ -6,7 +6,32 @@ import numpy.typing as npt
 
 
 class CameraDriver(cv2.VideoCapture):
-    """OpenCVを用いた, Webカメラの制御を行うクラス."""
+    """
+    OpenCVを用いた, Webカメラの制御を行うクラス.
+
+    Note
+    ----
+    - カメラが対応していない `width`・`height`・`fps`を指定すると,
+      この時点でエラーが発生する.
+    - Intel Realsense の (width, height) = (640, 480) or (320, 240).
+    - Intel Realsense の fps = 30 or 60.
+
+    Parameters
+    ----------
+    camera_id : int
+        カメラのID.
+    width : int
+        画像の幅.
+    height : int
+        画像の高さ.
+    fps : int
+        カメラのFPS.
+
+    Raises
+    ------
+    RuntimeError
+        カメラの初期化に失敗した場合.
+    """
 
     def __init__(
         self,
@@ -15,28 +40,6 @@ class CameraDriver(cv2.VideoCapture):
         height: int = 240,
         fps: int = 60,
     ) -> None:
-        """
-        カメラの初期化.
-
-        Note
-        ----
-        - カメラが対応していない `width`・`height`・`fps`を指定すると,
-          この時点でエラーが発生する.
-        - Intel Realsense の (width, height) = (640, 480) or (320, 240).
-        - Intel Realsense の fps = 30 or 60.
-
-        Parameters
-        ----------
-        camera_id : int
-            カメラのID.
-        width : int, default 320
-            画像の幅.
-        height : int, default 240
-            画像の高さ.
-        fps : int, default 60
-            カメラのFPS.
-
-        """
         super().__init__(index=camera_id)
         self.camera_id = camera_id
         self.set(cv2.CAP_PROP_FPS, fps)
@@ -66,9 +69,14 @@ class CameraDriver(cv2.VideoCapture):
 
         Returns
         -------
-        np.ndarray
+        npt.ArrayLike
             カメラから取得したフレーム.
             `self.height`・`self.width`のサイズの画像.
+
+        Raises
+        ------
+        RuntimeError
+            カメラからのフレーム取得に失敗した場合.
 
         """
         ret, frame = self.read()
